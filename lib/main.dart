@@ -55,6 +55,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  InAppWebViewController webViewController;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         initialHeaders: {},
         onWebViewCreated: (InAppWebViewController controller) {
-
+          webViewController = controller;
+          controller.addJavaScriptHandler(handlerName: "handlerName", callback: (List<dynamic> arguments){
+            print("=============" + arguments.toString());
+            print("array: ${arguments[2].runtimeType.toString()}");
+            print("dictionary: ${arguments[3].runtimeType.toString()}");
+          });
         },
         onLoadStart: (InAppWebViewController controller, String url) {
 
@@ -113,8 +119,20 @@ class _MyHomePageState extends State<MyHomePage> {
         onProgressChanged: (InAppWebViewController controller, int progress) {
 
         },
+        onConsoleMessage: (InAppWebViewController controller, ConsoleMessage consoleMessage) {
+          print("=============" + consoleMessage.message);
+        },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), //
     );
+  }
+
+  void _incrementCounter() {
+    webViewController.evaluateJavascript(source: "window.appSendJs('hello')");
   }
 
   @override
