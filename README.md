@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+This project is associated with [cocos_creator_test](https://github.com/hwh97/cocos_creator_test.git).
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
